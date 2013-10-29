@@ -37,7 +37,7 @@ yourname = do
 
 --Monades (truc mathématique comme les monoides mais en fonctionnelle) 
 -- permet de faire des entrées sorties
--- type Sring = [char] --type synonyme
+-- type String = [char] --type synonyme
 --Parsec
 --type Parse x = String->[]
 

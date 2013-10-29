@@ -1,18 +1,11 @@
 import System.IO
 
-doubleMe x = x + x
-
-doubleUs x y = doubleMe x + doubleMe y
-
 fac n = product [1..n]
 
 fact n = if(n==0)then 1 else n*(fact(n-1))
 
 inc :: Int -> Int
 inc = \x -> x+1
-
-pls :: Int -> Int
-pls  = \n -> n+4
 
 e                     :: (a->b) -> [a] -> [b]
 e f  []               =  []
@@ -51,10 +44,13 @@ yourname = do
 --fonctions many et seq
 --
 
+--char :: CharString 
+
 --Parsec [Monadic Parser Combinator]
 
 --parse :: Parse Exp
---int :: Parser Int = String -> [(Int)]
---int = many(char'0') 'alt' ...)
+int :: Parser Int => String -> [(Int)]
+int = many(char '0' 'alt' char '1' 'alt' char '2' 'alt' char '3'
+	'alt' char '4' 'alt' char '5' 'alt' char '6'
+	'alt' char '7' 'alt' char '8' 'alt' char '9')
 
-char :: CharString 

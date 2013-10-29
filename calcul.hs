@@ -1,22 +1,27 @@
 import System.IO
 
+
+--Factorielle à l'aide d'une liste
 fac n = product [1..n]
 
+--Factorielle récursive
 fact n = if(n==0)then 1 else n*(fact(n-1))
 
+--Petite fonction incrémentation
 inc :: Int -> Int
 inc = \x -> x+1
 
+--Fonction d'ordre supérieure pour appliquer une fonction à des éléments d'une liste
 e                     :: (a->b) -> [a] -> [b]
 e f  []               =  []
 e f (x:xs)            =  f x : map f xs
 
-
+--
 length' :: (Num b) => [a] -> b  
 length' [] = 0  
 length' (_:xs) = 1 + length' xs 
 
-
+--Fonction qui permet de lire le contenu des caractères d'un fichier
 main = do
 	withFile "essai.txt" ReadMode (\handle -> do 
 	contents <- hGetContents handle
@@ -26,14 +31,16 @@ main = do
 --Les chaines de caratères sont des tableaux donc il suffit d'utiliser les fonctions
 --des tableaux afin de les traiter. Désormais le problème est de convertir un
 --IO en string de sortie.
---
 
+--Exemple rapide de l'utilisation de putStrLn
 hello = putStrLn "hello, world"
 
+--Exemple de l'utilisation de getLine
 yourname = do
     putStrLn "Hello, what's your name?"
     name <- getLine
     putStrLn ("Hey " ++ name ++ ", you rock!")
+    
 
 --Monades (truc mathématique comme les monoides mais en fonctionnelle) 
 -- permet de faire des entrées sorties

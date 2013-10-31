@@ -61,3 +61,19 @@ int = many(char '0' 'alt' char '1' 'alt' char '2' 'alt' char '3'
 	'alt' char '4' 'alt' char '5' 'alt' char '6'
 	'alt' char '7' 'alt' char '8' 'alt' char '9')
 
+--Utilisation de Parsec
+import Text.ParserCombinators.Parsec
+
+
+csvFile = endBy line eol
+
+line = sepBy cell separatorf --(char '+')
+
+cell = many (noneOf "+ - ;")
+
+separatorf = char '+' <|> char '-'
+
+eol = char ';'
+
+parsef :: String -> Either ParseError [[String]]
+parsef input = parse csvFile "(unknown)" input

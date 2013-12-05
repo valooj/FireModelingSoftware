@@ -5,12 +5,6 @@ main = do
  let (Right m) = (parse ifc "" f)
  putStrLn m
 
-type Comp  = String
-type Prop  = String
-type Value = String
-data Model = [(Comp,[(Prop,Value)])] | [Comp]
-  deriving Show
-
 ifc :: Parser Model
 ifc = many entry
 

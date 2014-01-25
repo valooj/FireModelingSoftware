@@ -1,46 +1,49 @@
 import Text.ParserCombinators.Parsec
+import Prelude hiding (Integer)
+import Types.hs
 
 main = do
  f <- readFile "projet3A.txt"
- let (Right m) = (parse ifc "" f)
+ let (Right m) = (parse file "" f)
  putStrLn m
- 
 
-data Value = Ref Int | Val String | Pair (String, [Value])
-data Ifc = List [(Int, String, Value)]
+file :: Parser entry
+file = many entry
 
-parseFile :: Parser Ifc
-parseFile = many entry
-
+entry :: Category
 entry = do
  c <- cat
- return c
+ return (CAT c)
 
+cat :: Category
 cat = do {
             ; m <- mat
 
-            ; return m }
+            ; return (MAT m) }
           <|> do {
 		         ; s <- sbo
 
-				 ; return s }
+				 ; return (SBO s) }
 
 	       <|> do {
 		      ; i <- ifc
-			      ; return i}
+			      ; return (IFC i) }
 
+mat :: Mat				  
 mat = do
  string "&MAT"
  number_of_entry <- idl
  name_of_entry <- paraml
- return (number_of_entry,name_of_entry)
+ return MAT (number_of_entry,name_of_entry)
 
+sbo :: Sbo
 sbo = do
  string "&SBO"
  number_of_entry <- idl
  name_of_entry <- paraml
- return (number_of_entry,name_of_entry)
+ return PairSbo (number_of_entry,name_of_entry)
 
+ifc :: Ifc
 ifc = do
  string "#"
  number_of_entry <- integer
@@ -49,33 +52,39 @@ ifc = do
  string " ("
  params_of_entry <- params
  string ")"
- return (number_of_entry,name_of_entry,params_of_entry)
+ return (ListISV (number_of_entry,name_of_entry,params_of_entry))
 
+idl :: Idl
 idl = do 
  string "ID = ' "
  l <- many letter
- string " "
+ string " ["
  d <- many digit
- string " ' "
- return (l,d)
+ string "]"
+ return (PairLD (l,d))
 
+paraml :: Paraml
 paraml = do
  l <- many letter
  string " = "
  v <- val
- return (l,v)
+ return (PairLV(l,v))
 
+idi :: Idi
 idi = do
  identity <- many (letter <|> digit)
  return identity
 
+params :: Params
 params = do
 	p <- parami
 	c <- cont
-	return (p,c)
+	return (List_Parami_Cont (p,c))
  <|> do
- epsilon
+ e <- epsilon
+ return (Vide e)
 
+parami :: Parami
 parami = do {
 			string "#"
 			
@@ -91,7 +100,7 @@ parami = do {
 				 
 				 ; string")"
 				 
-				 ; return (i,ps) }
+				 ; return (List_id_params (i,ps)) }
 	       <|> do {
 					 ; string "'"
 					 
@@ -100,25 +109,28 @@ parami = do {
 					 ; string "'"
 					 
 					 ; return t}
-	
+
+cont :: Cont				 
 cont = do
 	string ","
 	p <- parami
 	c <- cont
-	return (p,c)
+	return (List_Cont (p,c))
 	<|> do
-	epsilon
+ e <- epsilon
+ return (Vide1 e)
 	
+val :: Value
 val = do {
-            ; d <- many1 digit
+            ; d <- integer
 			
 			; string " [."
 			
-			; dd <- many1 digit
+			; dd <- integer
 			
 			; string "]"
 
-            ; return (d,dd) }
+            ; return (PairInt (d,dd)) }
           <|> do {
 		         ; string "' "
 				 
@@ -126,14 +138,17 @@ val = do {
 				 
 				 ; string " '"
 				 
-				 ; return l }
+				 ; return (Val l) }
 
+
+e :: Event_room
 e = do
 	n <- room
 	string " "
 	u <- undesired
-	return (n,u)
-	
+	return (PairRU (n,u))
+
+undesired :: Undesired
 undesired = do {
 			; s <- symbol
 			
@@ -141,7 +156,7 @@ undesired = do {
 			
             ; v <- val
 
-            ; return (s,v) }
+            ; return (PairInf (s,v)) }
           <|> do {
 		         ; s <- symbol
 
@@ -149,7 +164,7 @@ undesired = do {
 				 
 				 ; v <- val
 				 
-				 ; return (s,v) }
+				 ; return (PairSup (s,v)) }
 
 	       <|> do {
 					 ; u <- undesired
@@ -158,18 +173,23 @@ undesired = do {
 					 
 					 ; u1 <- undesired
 			  
-					 ; return (u,u1) }
+					 ; return (And (u,u1)) }
  
 
+text :: Text
 text = do
  txt <- many letter
  return txt
 
+integer :: Integer
 integer = many1 digit
 
+symbol :: Symbol
 symbol = many letter
 
+room :: Room
 room = many1 letter
 
+epsilon :: Epsilon
 epsilon = do 
  return string ""

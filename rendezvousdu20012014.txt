@@ -1,0 +1,11 @@
+Ré-explique le diagramme de classe
+Prouver la preuve par retour à l'identité
+Certification qui porte sur tous les scénarios possibles
+L'approche formelle sera une autre manière manière de décrire les choses
+//Utilisation de monades fonctions 
+Functional programming for Dsl
+
+état de l'art (3 pages)
+3pages notre contribution
+
+IFC = (&Comp =

@@ -1,0 +1,17 @@
+
+--Fusion des Grammaires
+Il faut vaudra modifier les grammaires afin de les fusionner.
+Car il y a nécessité d'établir un parseur d'un fichier unique dans lequel
+les intervenants pourront mettre leur données sans changer leur langages.
+Puis nous opérons à partir de ce fichier pour créer un fichier de configuration tel
+que celui donner dans l'exemple (IFAC, page 2). 
+
+On a de l'IFC pour l'architecte (récapitulatif de ce qu'est l'IFC).
+IFC : Le format IFC (Industry Foundation Classes) est un format de fichier orienté
+objet utilisé par l'industrie du bâtiment pour échanger et partager des informations
+entre logiciels. (Source : wikipédia trouver un livre plutôt.)
+
+On a de un autre format inconnu , afin de décrire les pour le moment.
+
+--Transformation du fichier original en un fichier compréhensible par le CIFI
+Interprétation des données à partir d'un langage vers un autre langage.

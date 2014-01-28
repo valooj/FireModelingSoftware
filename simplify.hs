@@ -1,20 +1,38 @@
 import Text.ParserCombinators.Parsec
 
-file = endBy ifc eoifc
+main = do
+ f <- readFile "projet3A.txt"
+ let m = (parse ifc "" f)
+ print m
 
-ifc = sepBy idt sepidt
+--faire (Right m) si on est sûr que le résultat est bon
+--et qu'on veut supprimer le "Right" avant le texte à afficher
 
-idt = many (noneOf "# = ;")
+-- putStrLn demande un string
+-- print imprime n'importe quel objet
+-- print x = putStrLn(show x)
 
-sepidt = char '#' <|> char '='
+type Idt = String
+type Name = String
+type Prop = String
+type Model = [(Idt,Name,Prop)]
 
-eoifc = char ';'
+ifc :: Parser Model
+ifc = many entry
 
+entry = do
+ string "#"
+ i <- idt
+ string "= "
+ name <- idt
+ string"("
+ prop <- idt
+ string")"
+-- string";"
+-- string"\n"
+ return (i,name,prop)
  
---int :: Parser Int => String -> [(Int)]
---int = many(char '0' 'alt' char '1' 'alt' char '2' 'alt' char '3'
---        'alt' char '4' 'alt' char '5' 'alt' char '6'
---        'alt' char '7' 'alt' char '8' 'alt' char '9')
-		
-parseidt :: String -> Either ParseError [[String]]
-parseidt input = parse file "" input
+idt = many (letter <|> digit <|> char '\'' <|> char ','
+ <|> char '#' <|> char '$' <|> char '.')
+-- <|> char ')' <|> char ';' <|> char '\n' <|> char '='
+-- <|> char ' ' <|> char '(')

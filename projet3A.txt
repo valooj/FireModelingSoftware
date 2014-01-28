@@ -4,5 +4,3 @@
 #9502= IFCCARTESIANPOINT((0.,0.,6200.));
 #9498= IFCDIRECTION((0.,0.,1.));
 #9494= IFCDIRECTION((1.,0.,0.));
-
-#<ID> = <IFC>[(#<ID>|'<String>'|(listint))]

@@ -5,7 +5,7 @@ Value(PaintInt,Val),Event_room(PairRU),Undesired(PairInf,PairSup,And),Entry,
 Idi,Text,Integer,Symbol,Room,Epsilon)
 
 
-data Category = CAT Choice
+data Category = Choice Category
 data Choice = MAT String | SBO String | IFC String
 
 data Mat = PairMat (Idl,Paraml)

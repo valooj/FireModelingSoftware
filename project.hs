@@ -1,11 +1,11 @@
 import Text.ParserCombinators.Parsec
 import Prelude hiding (Integer)
-import Types.hs
+import Types
 
 main = do
  f <- readFile "projet3A.txt"
  let (Right m) = (parse file "" f)
- putStrLn m
+ print m
 
 file :: Parser entry
 file = many entry

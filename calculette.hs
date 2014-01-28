@@ -16,7 +16,7 @@ type Parse x = String -> [(x, String)]
 char :: char -> Parser char
 all :: Parser x -> Parsec x -> Parser x
 
-many :: Parsec x -> Parsec[x]
+many :: Parser x -> Parser[x]
 seq :: Parser x -> (x -> Parser y) -> Parser y
 
 int :: Parse Int => String -> Int

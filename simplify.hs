@@ -16,61 +16,83 @@ main = do
 
 type IfcIdt = String
 type IfcName = String
-type IfcProp = [(String)]
+type IfcProp = [String]
 type IfcModel = [(IfcIdt,IfcName,IfcProp)]
 
 ifc :: Parser IfcModel
-ifc = do
- ent <- many ifcentry
- eof
- return (ent)
+ifc = many ifcentry
 
 ifcentry = do
  string "#"
- i <- idt
+ i <- idtnumber
  string "= "
- name <- idt
+ name <- idtname
  string "("
- prop <- many ifcprp
- string ")"
- string";"
- string"\n"
+ prop <- ifcprop
+ eol
  return (i,name,prop)
- 
-idt = many (letter <|> digit <|> char ','
- <|> char '#' <|> char '$' <|> char '.'
- <|> char ')' <|> char '=' <|> char ';' <|> char '\n'
- <|> char ' ' <|> char '(' <|> char '\'')
 
-ifcprp = do
- string "\'"
- sequence <- idt
- string "\'"
- return (sequence)
+idtnumber = chiffre
+idtname =  alphabet
+--idt = many ( digit <|> letter <|> char ',' <|> char '$'
+-- <|> char ')' <|> char '\'' <|> char ' ' <|> char '('
+-- <|> char '.' <|> char '#')
+
+ifcprop = sepBy prop (char ',')
+prop = many (noneOf ",")
+eol = string ");"
+chiffre = many digit
+alphabet = many letter
+
+--ip = many (letter <|> digit <|> char '.' <|> char ',')
+--code permettant de distinguer les propriétés
+
+-- ifcprp = do
+ -- string "\'"
+ -- sequence <- ip
+ -- string "\'"
+ -- return (sequence)
+ -- <|>
+ -- do
+ -- string "#"
+ -- numero <- chiffre -- on doit définir une nuovelle fonction
+ -- return (numero)   -- car la précédente (idt) avale trop de caractères
+ -- <|>
+ -- do
+ -- string "$"
+ -- return ("$")
+ -- <|>
+ -- do
+ -- string "."
+ -- alpha <- alphabet
+ -- string"."
+ -- return (alpha)
+ 
+ 
 
 --lib
-type LibIdt = String
-type LibName = String
-type LibProp = [(String)]
-type LibModel = [(LibIdt,LibName,LibProp)]
+-- type LibIdt = String
+-- type LibName = String
+-- type LibProp = [(String)]
+-- type LibModel = [(LibIdt,LibName,LibProp)]
 
-lib :: Parser LibModel
-lib = many libentry
+-- lib :: Parser LibModel
+-- lib = many libentry
 
-libentry = do
- string "&"
- i <- idt
- string "= "
- name <- idt
- string "("
- prop <- many libprp
- string ")"
+-- libentry = do
+ -- string "&"
+ -- i <- idt
+ -- string "= "
+ -- name <- idt
+ -- string "("
+ -- prop <- many libprp
+ -- string ")"
 -- string ";"
 -- string "\n"
- return (i,name,prop)
+ -- return (i,name,prop)
 
-libprp = do
- string "'"
- sequence <- idt
- string "'"
- return (sequence)
+-- libprp = do
+ -- string "'"
+ -- sequence <- idt
+ -- string "'"
+ -- return (sequence)

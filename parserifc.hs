@@ -39,7 +39,7 @@ idtname = many (letter <|> digit)
 ifcprop = sepBy prop (char ',')
 prop = many (noneOf "=,();\n")
 eol = string ";\n"
-opening = try (string "((")
- <|> string "("
-closing = try (string "))")
+opening = try (string "((") -- try : fonction qui regarde si elle va trouver
+ <|> string "("				-- l'élément puis qui le consomme afin de matcher
+closing = try (string "))") -- à la grammaire demandée
  <|> string ")"
